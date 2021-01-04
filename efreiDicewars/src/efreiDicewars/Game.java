@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Game implements Iterable<Player> {
 	private List<Player> game;
+	private int actualPlayer;
 	
 	@Override
 	public Iterator<Player> iterator() {
@@ -15,6 +16,7 @@ public class Game implements Iterable<Player> {
 	
 	public Game() {
 		game = new ArrayList<Player>();
+		actualPlayer = 0;
 	}
 	
 	public void add(Player player) {
@@ -67,9 +69,13 @@ public class Game implements Iterable<Player> {
     		Player player = new Player(i, name, size * 3);
     		game.add(player);
     	}
+    	game.actualPlayer = Map.getRandomInt(nbPlayers);
     	System.out.println("List of the players: ");
     	for (Player s : game) {
-			System.out.println("Player " + s.getID() + ": " + s.getName());
+			System.out.print("Player " + s.getID() + ": " + s.getName());
+			if (s.getID() == game.actualPlayer)
+				System.out.print(" => First Player");
+			System.out.println();
 		}
     	scanner.close();
     	Map map = new Map(game, nbPlayers, size);

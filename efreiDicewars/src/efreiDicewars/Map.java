@@ -29,15 +29,27 @@ public class Map {
 					while (belongs == -1 || !stockEmpty(belongs, xSizeMap, game)) {
 							belongs =  getRandomInt(xSizeMap);
 					}
-					int maxDices = 9;
+					int maxDices = 8;
 					int dices;
 					Player player = game.get(belongs);
 					if (player.getDiceStock() < 8)
-						maxDices = player.getDiceStock() + 1;
-					dices =  getRandomInt(maxDices);
+						maxDices = player.getDiceStock();
+					dices =  getRandomInt(maxDices) + 1;
+					System.out.println("rd: " + Integer.toString(dices));
+					System.out.println("y: " + Integer.toString(this.y));
+					System.out.println("terr: " + Integer.toString(player.getTerritories().size()));
+					System.out.println("dice stk: " + Integer.toString(player.getDiceStock()));
+					System.out.println("dice stk: " + Integer.toString(player.getID()));
 					// case too much dices for a player at the end of the array
-					if ((8 * (this.y- 1 - player.getTerritories().size())) == player.getDiceStock())
+					if ((8 * (this.y - player.getTerritories().size())) == player.getDiceStock())
 						dices = 8;
+					// case too few dices
+					if ((this.y - player.getTerritories().size()) == player.getDiceStock())
+						dices = 1;
+					// case last cell, put the rest of the dices
+					else if ((this.y - player.getTerritories().size()) == 1 && player.getDiceStock() < 8)
+						dices = player.getDiceStock();
+					player.removeDiceStock(dices);
 					this.Map[x][y] = new Territory(belongs, dices);
 					getNeighbours(x, y);
 					player.addTerritory(this.Map[x][y].getID());

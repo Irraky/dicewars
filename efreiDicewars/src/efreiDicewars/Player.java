@@ -44,8 +44,8 @@ public class Player {
     	return this.DiceStock;
     }
     
-    public void changeDiceStock(int diceStock) {
-    	this.DiceStock = diceStock;
+    public void removeDiceStock(int dices) {
+    	this.DiceStock = this.DiceStock - dices;
     }
     
   /*
