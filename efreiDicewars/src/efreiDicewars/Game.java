@@ -72,7 +72,7 @@ public class Game implements Iterable<Player> {
 			System.out.println("Player " + s.getID() + ": " + s.getName());
 		}
     	scanner.close();
-    	Map map = new Map(game, nbPlayers, size + 1);
+    	Map map = new Map(game, nbPlayers, size);
     	map.displayMap();
     }
 

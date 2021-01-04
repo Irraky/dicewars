@@ -14,33 +14,22 @@ public class Map {
 		this.x = xSizeMap;
 		this.y = ySizeMap;
 		this.Map = new Territory [this.x][this.y];
-		int stockEmptyTerritory = this.y - 1;
 		for (int x = 0; x < xSizeMap; x++) {
 			for (int y = 0; y < this.y; y++) {
 				int belongs = -1;
-				System.out.print("in it");
-				if (emptyZonePossible(x, y, this.y, stockEmptyTerritory)) {
+				// cases with problem, need an other solution if we want empty places
+				/*if (emptyZonePossible(x, y, this.y - 1, stockEmptyTerritory)) {
 					System.out.print("in it");
-					int z = 0;
-					while (belongs == -1 || stockEmpty(belongs, xSizeMap, game, stockEmptyTerritory)) {
+					while (belongs == -1 || !stockEmpty(belongs, xSizeMap, game, stockEmptyTerritory)) {
 						belongs =  getRandomInt(xSizeMap + 1);
 						System.out.print("belongs: " + Integer.toString(belongs));
-						z++;
-						if (z == 10)
-							break;
 					}
 				} else {
-					System.out.println("OUT");
-					int z = 0;
-					while (belongs == -1 || stockEmpty(belongs, xSizeMap, game, stockEmptyTerritory)) {
+				*/
+					while (belongs == -1 || !stockEmpty(belongs, xSizeMap, game)) {
 							belongs =  getRandomInt(xSizeMap);
-							z++;
-							if (z == 10)
-								break;
 					}
-				}
-				System.out.println("");
-				if (belongs != xSizeMap) {
+					System.out.print("belongs: " + Integer.toString(belongs));
 					int maxDices = 9;
 					int dices;
 					Player player = game.get(belongs);
@@ -52,7 +41,7 @@ public class Map {
 						dices = 8;
 					this.Map[x][y] = new Territory(belongs, dices);
 					getNeighbours(x, y);
-				}
+					player.addTerritory(this.Map[x][y].getID());
 			}
 		}
 	}
@@ -99,19 +88,16 @@ public class Map {
 		}
 	}
 
-	private boolean stockEmpty(int belongs, int xSizeMap, Game game, int stockEmptyTerritory) {
-		System.out.println("belongs: " + Integer.toString(belongs) + "  xmap: "+ Integer.toString(xSizeMap));
-		if (belongs == xSizeMap && stockEmptyTerritory > 0)
-			return true;
-		System.out.println("no null");
+	private boolean stockEmpty(int belongs, int xSizeMap, Game game) {
 		Player player = game.get(belongs);
-		if (player.getTerritories().size() < this.x - 1)
+		if (player.getTerritories().size() < this.x)
 			return true;
 		return false;
 			
 	}
-
-	private boolean emptyZonePossible(int x, int y, int yMax, int stockEmptyTerritory) {
+	
+// useless for the moment
+/*	private boolean emptyZonePossible(int x, int y, int yMax, int stockEmptyTerritory) {
 		if (stockEmptyTerritory == 0)
 			return false;
 		if (x == 0)
@@ -123,6 +109,7 @@ public class Map {
 			return false;
 		return true;
 	}
+*/
 	
 	public void displayMap() {
 		for (int x = 0; x < this.x; x++) {

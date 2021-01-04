@@ -32,6 +32,14 @@ public class Player {
     	return this.list_of_territories;
     }
     
+    public void addTerritory(int id) {
+    	this.list_of_territories.add(id);
+    }
+    
+    public void removeTerritory(int id) {
+    	this.list_of_territories.remove(id);
+    }
+    
     public int getDiceStock() {
     	return this.DiceStock;
     }
