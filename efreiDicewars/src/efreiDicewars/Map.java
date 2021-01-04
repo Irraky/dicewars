@@ -29,7 +29,6 @@ public class Map {
 					while (belongs == -1 || !stockEmpty(belongs, xSizeMap, game)) {
 							belongs =  getRandomInt(xSizeMap);
 					}
-					System.out.print("belongs: " + Integer.toString(belongs));
 					int maxDices = 9;
 					int dices;
 					Player player = game.get(belongs);
@@ -90,7 +89,7 @@ public class Map {
 
 	private boolean stockEmpty(int belongs, int xSizeMap, Game game) {
 		Player player = game.get(belongs);
-		if (player.getTerritories().size() < this.x)
+		if (player.getTerritories().size() < this.y)
 			return true;
 		return false;
 			

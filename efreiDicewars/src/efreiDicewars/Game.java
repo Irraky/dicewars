@@ -73,6 +73,7 @@ public class Game implements Iterable<Player> {
 		}
     	scanner.close();
     	Map map = new Map(game, nbPlayers, size);
+    	System.out.println();
     	map.displayMap();
     }
 
