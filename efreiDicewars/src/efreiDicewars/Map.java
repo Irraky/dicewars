@@ -32,7 +32,6 @@ public class Map {
 					int maxDices = 8;
 					int dices;
 					Player player = game.get(belongs);
-					System.out.println("player: " + Integer.toString(player.getID()) + " dices :" + Integer.toString(player.getDiceStock()));
 					if (player.getDiceStock() < 8)
 						maxDices = player.getDiceStock();
 					dices =  getRandomInt(maxDices) + 1;
