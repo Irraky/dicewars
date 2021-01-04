@@ -32,15 +32,19 @@ public class Map {
 					int maxDices = 8;
 					int dices;
 					Player player = game.get(belongs);
+					System.out.println("player: " + Integer.toString(player.getID()) + " dices :" + Integer.toString(player.getDiceStock()));
 					if (player.getDiceStock() < 8)
 						maxDices = player.getDiceStock();
 					dices =  getRandomInt(maxDices) + 1;
-					// case too much dices for a player at the end of the array
-					if ((8 * (this.y - player.getTerritories().size())) == player.getDiceStock())
-						dices = 8;
 					// case too few dices
 					if ((this.y - player.getTerritories().size()) == player.getDiceStock())
 						dices = 1;
+					// case too few dices 2
+					if ((player.getDiceStock() - dices) < (this.y - player.getTerritories().size() - 1))
+							dices = dices - (player.getDiceStock() - this.y + player.getTerritories().size() + 1);
+					// case too much dices for a player at the end of the array
+					else if ((8 * (this.y - player.getTerritories().size())) == player.getDiceStock())
+						dices = 8;
 					// case last cell, put the rest of the dices
 					else if ((this.y - player.getTerritories().size()) == 1 && player.getDiceStock() < 8)
 						dices = player.getDiceStock();
