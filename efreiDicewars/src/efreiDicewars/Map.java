@@ -35,11 +35,6 @@ public class Map {
 					if (player.getDiceStock() < 8)
 						maxDices = player.getDiceStock();
 					dices =  getRandomInt(maxDices) + 1;
-					System.out.println("rd: " + Integer.toString(dices));
-					System.out.println("y: " + Integer.toString(this.y));
-					System.out.println("terr: " + Integer.toString(player.getTerritories().size()));
-					System.out.println("dice stk: " + Integer.toString(player.getDiceStock()));
-					System.out.println("dice stk: " + Integer.toString(player.getID()));
 					// case too much dices for a player at the end of the array
 					if ((8 * (this.y - player.getTerritories().size())) == player.getDiceStock())
 						dices = 8;

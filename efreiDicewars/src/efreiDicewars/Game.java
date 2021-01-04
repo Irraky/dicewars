@@ -79,7 +79,7 @@ public class Game implements Iterable<Player> {
 		}
     	scanner.close();
     	Map map = new Map(game, nbPlayers, size);
-    	System.out.println();
+    	System.out.println("\n Map at beginning with [owner id, number of dices]:");
     	map.displayMap();
     }
 
