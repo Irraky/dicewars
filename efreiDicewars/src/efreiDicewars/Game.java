@@ -31,10 +31,11 @@ public class Game implements Iterable<Player> {
 
 	public static void main(String[] args) {
     	Scanner scanner = new Scanner( System.in );
-    	String answer;
+    	String answer = "yes";
     	
     	System.out.println("Welcome to dicewars!");
     	System.out.println("Do you want to play a game ? (Yes-no)");
+    	while (!answer.equals("no")) {
     	answer = scanner.nextLine();
     	if (answer.equals("no")) {
     		System.out.println("Okay then bye");
@@ -78,25 +79,53 @@ public class Game implements Iterable<Player> {
     	}
     	Collections.shuffle(game.players);
     	game.actualPlayer = 0;
-    	System.out.println("List of the players: ");
+    	System.out.println("Order of a turn: ");
     	int id = 0;
     	for (Player s : game.players) {
     		s.changeID(id);
 			System.out.println("Player " + s.getID() + ": " + s.getName());
 		}
-    	scanner.close();
+
     	Map map = new Map(game, nbPlayers, size);
     	System.out.println("\n Map at beginning with [owner id, number of dices]:");
     	map.displayMap();
-    	/*
+    	
+    	
     	boolean endTurn;
     	while (!map.oneOwner()) {
     		endTurn = false;
-    		System.out.println(" turn:");
+    		System.out.println("\nTurn of player: " + game.get(game.actualPlayer).getName());
     		while (endTurn == false) {
-    			
+    			System.out.println("Choose your actions:\n1.Attack\n2.end turn");
+    			answer = scanner.nextLine();
+    			if (answer.contains("end turn")) {
+    				game.get(game.actualPlayer).endTurn();
+    				endTurn = true;
+    			}
+				else {
+					try {
+						game.get(game.actualPlayer).attackTerritory();
+					} catch (InvalidInput e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvalidInput_1 e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvalidInput_2 e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SameInput e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
     		}
-    	}*/
+    	}
+    	System.out.println("End of the game. Player " + game.get(map.getWinner()).getName());
+    	System.out.println("Do you want to play a new game ? (Yes-no) ");
+    	}
+    	System.out.println("Goodbye");
+    	scanner.close();
     }
 
 	public Player get(int belongs) {

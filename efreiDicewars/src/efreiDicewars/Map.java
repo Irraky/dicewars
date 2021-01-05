@@ -141,6 +141,10 @@ public class Map {
 		return true;
 	}
 	
+	public int getWinner() {
+		return this.Map[0][0].getPlayerID();
+	}
+	
 	public static int getRandomInt(int max) {
 		Random random = new Random();
 		return random.nextInt(max);
