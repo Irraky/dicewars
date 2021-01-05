@@ -28,6 +28,10 @@ public class Player {
     	return this.ID;
     }
     
+    public void changeID(int id) {
+    	this.ID = id;
+    }
+    
     public ArrayList<Integer> getTerritories() {
     	return this.list_of_territories;
     }

@@ -1,5 +1,6 @@
 package efreiDicewars;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Map {
@@ -26,12 +27,12 @@ public class Map {
 					}
 				} else {
 				*/
-					while (belongs == -1 || !stockEmpty(belongs, xSizeMap, game)) {
+					while (belongs == -1 || !stockEmpty(belongs, xSizeMap, game.getPlayers())) {
 							belongs =  getRandomInt(xSizeMap);
 					}
 					int maxDices = 8;
 					int dices;
-					Player player = game.get(belongs);
+					Player player = game.getPlayers().get(belongs);
 					if (player.getDiceStock() < 8)
 						maxDices = player.getDiceStock();
 					dices =  getRandomInt(maxDices) + 1;
@@ -97,8 +98,8 @@ public class Map {
 		}
 	}
 
-	private boolean stockEmpty(int belongs, int xSizeMap, Game game) {
-		Player player = game.get(belongs);
+	private boolean stockEmpty(int belongs, int xSizeMap, ArrayList<Player> players) {
+		Player player = players.get(belongs);
 		if (player.getTerritories().size() < this.y)
 			return true;
 		return false;
@@ -127,6 +128,17 @@ public class Map {
 			}
 			System.out.println("");
 		}
+	}
+	
+	public boolean oneOwner() {
+		int id = this.Map[0][0].getPlayerID();
+		for (int x = 1; x < this.x; x++) {
+			for (int y = 0; y < this.y; y ++) {
+				if (id != this.Map[x][y].getPlayerID())
+					return false;
+			}
+		}
+		return true;
 	}
 	
 	public static int getRandomInt(int max) {

@@ -1,28 +1,35 @@
 package efreiDicewars;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
 public class Game implements Iterable<Player> {
-	private List<Player> game;
+	private ArrayList<Player> players;
 	private int actualPlayer;
 	
 	@Override
 	public Iterator<Player> iterator() {
-		return game.iterator();
+		return players.iterator();
 	}
 	
 	public Game() {
-		game = new ArrayList<Player>();
+		players = new ArrayList<Player>();
 		actualPlayer = 0;
 	}
 	
-	public void add(Player player) {
-		game.add(player);
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
-    public static void main(String[] args) {
+	
+	public void add(Player player) {
+		players.add(player);
+	}
+
+	public static void main(String[] args) {
     	Scanner scanner = new Scanner( System.in );
     	String answer;
     	
@@ -67,24 +74,33 @@ public class Game implements Iterable<Player> {
     		System.out.println("Name of the player: ");
     		String name = scanner.nextLine();
     		Player player = new Player(i, name, size * 3);
-    		game.add(player);
+    		game.players.add(player);
     	}
-    	game.actualPlayer = Map.getRandomInt(nbPlayers);
+    	Collections.shuffle(game.players);
+    	game.actualPlayer = 0;
     	System.out.println("List of the players: ");
-    	for (Player s : game) {
-			System.out.print("Player " + s.getID() + ": " + s.getName());
-			if (s.getID() == game.actualPlayer)
-				System.out.print(" => First Player");
-			System.out.println();
+    	int id = 0;
+    	for (Player s : game.players) {
+    		s.changeID(id);
+			System.out.println("Player " + s.getID() + ": " + s.getName());
 		}
     	scanner.close();
     	Map map = new Map(game, nbPlayers, size);
     	System.out.println("\n Map at beginning with [owner id, number of dices]:");
     	map.displayMap();
+    	/*
+    	boolean endTurn;
+    	while (!map.oneOwner()) {
+    		endTurn = false;
+    		System.out.println(" turn:");
+    		while (endTurn == false) {
+    			
+    		}
+    	}*/
     }
 
 	public Player get(int belongs) {
-		for (Player s : game) {
+		for (Player s : players) {
 			if (belongs == s.getID())
 			return s;
 		}
