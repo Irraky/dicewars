@@ -28,6 +28,25 @@ public class Game implements Iterable<Player> {
 	public void add(Player player) {
 		players.add(player);
 	}
+	
+	public int getNextPlayer(Map map) {
+		// game finished, player not important
+		if (map.oneOwner() == true)
+			return this.actualPlayer + 1; 
+		int next = (this.actualPlayer + 1) % this.players.size();
+		// if player has no territory, he can't play (because he lost)
+		while (this.get(this.actualPlayer).getTerritories().size() == 0)
+			next = (this.actualPlayer + 1) % this.players.size();
+		return next;
+	}
+
+	public Player get(int belongs) {
+		for (Player s : players) {
+			if (belongs == s.getID())
+			return s;
+		}
+		return null;
+	}
 
 	public static void main(String[] args) {
     	Scanner scanner = new Scanner( System.in );
@@ -69,7 +88,7 @@ public class Game implements Iterable<Player> {
 	    		{
 	    		   nbPlayers = scanner.nextInt();
 	    		}
-	    		// complete the reading of the line
+	    		// line to complete the reading of the line
 	    		scanner.nextLine();
 	    	}
 	    	
@@ -125,7 +144,7 @@ public class Game implements Iterable<Player> {
 						}
 					}
 	    		}
-	    		game.actualPlayer = game.getNextPlayer(game.actualPlayer);
+	    		game.actualPlayer = game.getNextPlayer(map);
 	    	}
 	    	System.out.println("End of the game. Player " + game.get(map.getWinner()).getName());
 	    	System.out.println("Do you want to play a new game ? (Yes-no) ");
@@ -133,16 +152,4 @@ public class Game implements Iterable<Player> {
     	System.out.println("Goodbye");
     	scanner.close();
     }
-	
-	public int getNextPlayer(int players) {
-		return (players + 1) % this.players.size();
-	}
-
-	public Player get(int belongs) {
-		for (Player s : players) {
-			if (belongs == s.getID())
-			return s;
-		}
-		return null;
-	}
 }
