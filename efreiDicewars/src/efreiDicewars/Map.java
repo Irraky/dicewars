@@ -18,6 +18,7 @@ public class Map {
 		for (int x = 0; x < xSizeMap; x++) {
 			for (int y = 0; y < this.y; y++) {
 				int belongs = -1;
+				// random number limit => check if map is consistent
 				// cases with problem, need an other solution if we want empty places
 				/*if (emptyZonePossible(x, y, this.y - 1, stockEmptyTerritory)) {
 					System.out.print("in it");

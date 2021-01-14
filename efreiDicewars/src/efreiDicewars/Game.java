@@ -63,12 +63,16 @@ public class Game implements Iterable<Player> {
 	    	
 	    	System.out.println("\nWe have the board, we now need the players.");
 	    	int nbPlayers = 0;
-	    	while (nbPlayers > 6 || nbPlayers < 2) {
+	    	while ( nbPlayers > 6 || nbPlayers < 2) {
 	    		System.out.println("Enter the number of players (between 2 and 6): ");
-	    		nbPlayers = scanner.nextInt();
+	    		if(scanner.hasNextInt()) 
+	    		{
+	    		   nbPlayers = scanner.nextInt();
+	    		}
 	    		// complete the reading of the line
 	    		scanner.nextLine();
 	    	}
+	    	
 	    	
 	    	Game game = new Game();
 	    	for (int i = 0; i < nbPlayers; i++) {
@@ -84,10 +88,11 @@ public class Game implements Iterable<Player> {
 	    	for (Player s : game.players) {
 	    		s.changeID(id);
 				System.out.println("Player " + s.getID() + ": " + s.getName());
+				id++;
 			}
 	
 	    	Map map = new Map(game, nbPlayers, size);
-	    	System.out.println("\n Map at beginning with [owner id, number of dices]:");
+	    	System.out.println("\nMap at beginning with [owner id, number of dices]:");
 	    	map.displayMap();
 	    	
 	    	
@@ -98,7 +103,7 @@ public class Game implements Iterable<Player> {
 	    		while (endTurn == false) {
 	    			System.out.println("Choose your actions:\n1. Attack\n2. end turn");
 	    			answer = scanner.nextLine();
-	    			if (answer.contains("end turn") || answer.contains("2")) {
+	    			if (answer.contains("end turn") || answer.contains("2") || answer.contains("end")) {
 	    				game.get(game.actualPlayer).endTurn();
 	    				endTurn = true;
 	    			}
@@ -120,6 +125,7 @@ public class Game implements Iterable<Player> {
 						}
 					}
 	    		}
+	    		game.actualPlayer = game.getNextPlayer(game.actualPlayer);
 	    	}
 	    	System.out.println("End of the game. Player " + game.get(map.getWinner()).getName());
 	    	System.out.println("Do you want to play a new game ? (Yes-no) ");
@@ -127,6 +133,10 @@ public class Game implements Iterable<Player> {
     	System.out.println("Goodbye");
     	scanner.close();
     }
+	
+	public int getNextPlayer(int players) {
+		return (players + 1) % this.players.size();
+	}
 
 	public Player get(int belongs) {
 		for (Player s : players) {
