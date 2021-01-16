@@ -62,7 +62,7 @@ public class Player{
    */
 
     // return true if the attack is a success
-    public boolean runAttack(Territory territoryAttacked, Territory territoryAttacker) {
+    public boolean rollDices(Territory territoryAttacked, Territory territoryAttacker) {
     	int diceRoll;
     	int attackedSum = 0;
     	int attackerSum = 0;

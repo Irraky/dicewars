@@ -117,12 +117,12 @@ public class Game implements Iterable<Player> {
 	    	boolean endTurn;
 	    	while (!map.oneOwner()) {
 	    		endTurn = false;
-	    		System.out.println("\nTurn of player: " + game.get(game.actualPlayer).getName());
+	    		System.out.println("\n\nTurn of player: " + game.get(game.actualPlayer).getName());
 	    		while (endTurn == false) {
 	    			System.out.println("Choose your actions:\n1. Attack\n2. end turn");
 	    			answer = scanner.nextLine();
-	    			if (answer.contains("end turn") || answer.contains("2") || answer.contains("end")) {
-	    				game.get(game.actualPlayer).endTurn();
+	    			if (answer.contains("end turn") || answer.contains("2") || answer.contains("end") || !map.attackPossible(game.actualPlayer)) {
+	    				game.get(game.actualPlayer).endTurn(map);
 	    				endTurn = true;
 	    			}
 					else {
@@ -143,9 +143,10 @@ public class Game implements Iterable<Player> {
 						}
 					}
 	    		}
+	    		System.out.println("End of the turn of  " + game.get(game.actualPlayer).getName());
 	    		game.actualPlayer = game.getNextPlayer(map);
 	    	}
-	    	System.out.println("End of the game. Player " + game.get(map.getWinner()).getName());
+	    	System.out.println("End of the game. Player " + game.get(map.getWinner()).getName() + "win!\n");
 	    	System.out.println("Do you want to play a new game ? (Yes-no) ");
     	}
     	System.out.println("Goodbye");

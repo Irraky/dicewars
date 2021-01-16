@@ -276,6 +276,18 @@ public class Map {
 		return true;
 	}
 	
+	public boolean attackPossible(int id) {
+		for (int x = 0; x < this.x; x++) {
+			for (int y = 0; y < this.y; y++) {
+				if (id == this.Map[x][y].getPlayerID()) {
+					if (this.Map[x][y].getDiceNumber() != 1)
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public static int getRandomInt(int max) {
 		Random random = new Random();
 		return random.nextInt(max);
