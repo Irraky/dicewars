@@ -67,17 +67,45 @@ public class Player{
     	int attackedSum = 0;
     	int attackerSum = 0;
     	
+    	System.out.print("Dices of the attacker territory: ");
     	for (int x = 0; x < territoryAttacker.getDiceNumber(); x++) {
     		diceRoll = Map.getRandomInt(6) + 1;
+    		System.out.print(diceRoll);
+    		if (x != (territoryAttacker.getDiceNumber()) - 1)
+    			System.out.print(" + ");
     		attackerSum += diceRoll;
     	}
+    	System.out.println("\nScore attacker = " + attackerSum);
+    	
+    	System.out.print("Dices of the defended territory: ");
     	for (int x = 0; x < territoryAttacked.getDiceNumber(); x++) {
     		diceRoll = Map.getRandomInt(6) + 1;
+    		System.out.print(diceRoll);
+    		if (x != (territoryAttacked.getDiceNumber()) - 1)
+    			System.out.print(" + ");
     		attackedSum += diceRoll;
     	}
+    	System.out.println("\nScore defender = " + attackerSum);
+    
     	if (attackedSum > attackerSum)
     		return false;
     	return true;
+    }
+    
+    public void runAttack(Territory territoryAttacked, Territory territoryAttacker, ArrayList<Player> players) {
+    	if (rollDices(territoryAttacked, territoryAttacker) == true) {
+    		// add territory id to the winner of this fight
+    		Player attacker = players.get(territoryAttacker.getPlayerID());
+    		attacker.addTerritory(territoryAttacked.getID());
+    		// remove territory id from the loser of the fight
+    		Player attacked = players.get(territoryAttacked.getPlayerID());
+    		attacked.removeTerritory(territoryAttacked.getID());
+    		// update the number of dices of the attacked territory
+    		territoryAttacked.updateDiceNumber(territoryAttacker.getDiceNumber() - 1);
+    		territoryAttacked.updatePlayerID(territoryAttacker.getPlayerID());
+    	}
+    	// update neighbors
+    	territoryAttacker.updateDiceNumber(1);
     }
     
     public void attackTerritory() throws InvalidInput, InvalidInput_1, InvalidInput_2, SameInput{
