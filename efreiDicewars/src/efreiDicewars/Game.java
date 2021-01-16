@@ -112,8 +112,7 @@ public class Game implements Iterable<Player> {
 	
 	    	Map map = new Map(game, nbPlayers, size);
 	    	System.out.println("\nMap at beginning with [owner id, number of dices]:");
-	    	map.displayMap();
-	    	
+	    	map.displayMap();	    	
 	    	
 	    	boolean endTurn;
 	    	while (!map.oneOwner()) {

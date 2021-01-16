@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Map {
+	// bad idea, a hash map would have been better
 	private Territory[][] Map;
 	private int x;
 	private int y;
@@ -51,10 +52,22 @@ public class Map {
 						dices = player.getDiceStock();
 					player.removeDiceStock(dices);
 					this.Map[x][y] = new Territory(belongs, dices);
-					getNeighbours(x, y);
 					player.addTerritory(this.Map[x][y].getID());
 			}
 		}
+		for (int x = 0; x < xSizeMap; x++) {
+			for (int y = 0; y < this.y; y++) {
+				this.getNeighbours(x, y);
+			}
+		}
+	}
+	
+	public int getX() {
+		return this.x;
+	}
+	
+	public int getY() {
+		return this.y;
 	}
 	
 	private void getNeighbours(int x, int y) {
@@ -144,6 +157,100 @@ public class Map {
 	
 	public int getWinner() {
 		return this.Map[0][0].getPlayerID();
+	}
+	
+	public int getLargestTerritoriesContiguous(int player) {
+		ArrayList<Integer> notLargest = new ArrayList<Integer>();
+		ArrayList<Integer> lst1 = new ArrayList<Integer>();
+		ArrayList<Integer> lst2 = new ArrayList<Integer>();
+		ArrayList<Integer> tmplist;
+		int ptr;
+		int actual;
+		
+		for (int x = 0; x < this.x; x++) {
+			for (int y = 0; y < this.y; y++) {
+				actual = this.Map[x][y].getID();
+				if (this.Map[x][y].getPlayerID() == player) {
+					if (notLargest.contains(actual) || lst1.contains(actual) || lst2.contains(actual))
+						continue;
+					ptr = 0;
+					if (lst1.size() == 0) {
+						lst1.add(actual);
+						while(ptr != lst1.size()) {
+							tmplist = getListOfNeighborOfSameId(lst1.get(ptr), player);
+							for (Integer n : tmplist) {
+								if (lst1 == null || !lst1.contains(n))
+									lst1.add(n);
+							}
+							ptr++;
+						}
+					}
+					else if (lst2.size() == 0) {
+						lst2.add(actual);
+						while(ptr != lst2.size()) {
+							tmplist =getListOfNeighborOfSameId(lst2.get(ptr), player);
+							for (Integer n : tmplist) {
+								if (lst2 == null || !lst2.contains(n))
+									lst2.add(n);
+							}
+							ptr++;
+						}
+					}
+					if (lst1.size() >= lst2.size()) {
+						for (Integer n : lst2) {
+							notLargest.add(n);
+						}
+						lst2.clear();
+					}
+					else {
+						for (Integer n : lst1) {
+							notLargest.add(n);
+						}
+						lst1.clear();
+					}
+				}
+			}
+		}
+		return lst2.size();
+	}
+	
+	public ArrayList<Integer> getListOfNeighborOfSameId(int id, int player) {
+		int x = 0;
+		int y = 0;
+		while (this.Map[x][y] != null && (id != this.Map[x][y].getID())) {
+			y++;
+			if (y == this.y) {
+				x++;
+				y = 0;
+			}
+		}
+				ArrayList<Integer> neighbor = new ArrayList<Integer>();
+		if (x >= this.x || y >= this.y)
+			return neighbor;
+		// top neighbor
+		if (x != 0 && this.Map[x-1][y] != null) {
+			if (this.Map[x-1][y].getPlayerID() == player)
+				neighbor.add(this.Map[x-1][y].getID());
+		}
+	
+		// right neighbor
+		if (y + 1 < this.y && this.Map[x][y + 1] != null) {
+			if (this.Map[x][y + 1].getPlayerID() == player)
+				neighbor.add(this.Map[x][y + 1].getID());
+		}
+	
+		// bottom neighbor
+		if (x + 1 < this.x && this.Map[x+1][y] != null) {
+			if (this.Map[x+1][y].getPlayerID() == player)
+				neighbor.add(this.Map[x+1][y].getID());
+		}
+		
+		// left neighbor
+		if (y > 0 && this.Map[x][y - 1] != null) {
+			if (this.Map[x][y - 1].getPlayerID() == player)
+				neighbor.add(this.Map[x][y - 1].getID());
+		}
+		return neighbor;
 	}
 	
 	public static int getRandomInt(int max) {

@@ -2,7 +2,7 @@ package efreiDicewars;
 
 import java.util.ArrayList;
 
-public class Territory {
+public class Territory{
 	private static int count = 0; 
 	private int ID;
 	private int PlayerID;
