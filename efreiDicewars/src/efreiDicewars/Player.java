@@ -61,6 +61,25 @@ public class Player{
     }
    */
 
+    // return true if the attack is a success
+    public boolean runAttack(Territory territoryAttacked, Territory territoryAttacker) {
+    	int diceRoll;
+    	int attackedSum = 0;
+    	int attackerSum = 0;
+    	
+    	for (int x = 0; x < territoryAttacker.getDiceNumber(); x++) {
+    		diceRoll = Map.getRandomInt(6) + 1;
+    		attackerSum += diceRoll;
+    	}
+    	for (int x = 0; x < territoryAttacked.getDiceNumber(); x++) {
+    		diceRoll = Map.getRandomInt(6) + 1;
+    		attackedSum += diceRoll;
+    	}
+    	if (attackedSum > attackerSum)
+    		return false;
+    	return true;
+    }
+    
     public void attackTerritory() throws InvalidInput, InvalidInput_1, InvalidInput_2, SameInput{
         int attacking_territory = -1;
         int targeted_territory = -1;
