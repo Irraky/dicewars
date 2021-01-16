@@ -214,6 +214,17 @@ public class Map {
 		return lst2.size();
 	}
 	
+	public Territory getTerritory(int id) {
+		for (int x = 0; x < this.x; x++) {
+			for (int y = 0; y < this.y; y++) {
+				if (id == this.Map[x][y].getID()) {
+					return this.Map[x][y];
+				}
+			}
+		}
+		return null;
+	}
+
 	public ArrayList<Integer> getListOfNeighborOfSameId(int id, int player) {
 		int x = 0;
 		int y = 0;
@@ -251,6 +262,18 @@ public class Map {
 				neighbor.add(this.Map[x][y - 1].getID());
 		}
 		return neighbor;
+	}
+	
+	public boolean maxDicesOnTerritories(int id) {
+		for (int x = 0; x < this.x; x++) {
+			for (int y = 0; y < this.y; y++) {
+				if (id == this.Map[x][y].getPlayerID()) {
+					if (this.Map[x][y].getDiceNumber() != 8)
+						return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public static int getRandomInt(int max) {

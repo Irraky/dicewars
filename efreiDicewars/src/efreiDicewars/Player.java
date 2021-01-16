@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
-public class Player {
+public class Player{
     private int ID;
     private String Name;
     private int DiceStock;
@@ -189,8 +189,24 @@ public class Player {
         System.out.println(targeted_territory);
     }
 
-    public void endTurn(){
+    public void endTurn(Map map){
         /*throws SkipTurn */
+    	if (this.getTerritories().size() == 0) {
+    		return;
+    	}
+    	int bonus = map.getLargestTerritoriesContiguous(this.getID());
+    	Territory territory;
+    	int id;
+    	int dices;
+    	for (int x = 0; x < bonus; x++) {
+    		do {
+    			id = Map.getRandomInt(this.list_of_territories.size());
+    			territory = map.getTerritory(id);
+    			dices = territory.getDiceNumber();
+    		}
+    		while (dices == 8 && !map.maxDicesOnTerritories(this.getID()));
+    		territory.updateDiceNumber(dices + 1);
+    	}
     }
 }
 
