@@ -125,23 +125,9 @@ public class Game implements Iterable<Player> {
 	    				game.get(game.actualPlayer).endTurn(map);
 	    				endTurn = true;
 	    			}
-					else {
-						try {
-							game.get(game.actualPlayer).attackTerritory();
-						} catch (InvalidInput e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InvalidInput_1 e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InvalidInput_2 e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (SameInput e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
+					game.get(game.actualPlayer).attackTerritory(map, game.getPlayers(), scanner);
+					System.out.println("Map after the attack: ");
+					map.displayMap();
 	    		}
 	    		System.out.println("End of the turn of  " + game.get(game.actualPlayer).getName());
 	    		game.actualPlayer = game.getNextPlayer(map);

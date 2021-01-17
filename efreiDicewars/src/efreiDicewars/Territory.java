@@ -22,6 +22,11 @@ public class Territory{
 		this.DiceNumber = newDiceNumber;
 	}
 	
+	public int getDiceNumber()
+	{
+		return this.DiceNumber;
+	}
+	
 	public void addNeighbour(int neighbour)
 	{
 		this.NeighborID.add(neighbour);

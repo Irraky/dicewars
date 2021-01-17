@@ -224,6 +224,17 @@ public class Map {
 		}
 		return null;
 	}
+	
+	public Territory getTerritoryByCoordinates(int xSearched, int ySearched) {
+		for (int x = 0; x < this.x; x++) {
+			for (int y = 0; y < this.y; y++) {
+				if (xSearched == x && ySearched == y) {
+					return this.Map[x][y];
+				}
+			}
+		}
+		return null;
+	}
 
 	public ArrayList<Integer> getListOfNeighborOfSameId(int id, int player) {
 		int x = 0;
