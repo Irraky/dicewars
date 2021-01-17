@@ -225,6 +225,27 @@ public class Map {
 		return null;
 	}
 	
+	public void checkOldID(int x_targeted, int y_targeted, int old_ID){
+		System.out.println(x_targeted + 1);
+		System.out.println(this.getX());
+	    if(x_targeted + 1 < this.getX() && y_targeted < this.getY() && this.Map[x+1][y] != null && x_targeted+1!=0 && y_targeted!=0){
+	        this.getTerritoryByCoordinates(x_targeted+1, y_targeted).removeNeighbour(old_ID);
+	        this.getNeighbours(x_targeted+1,y_targeted);
+	    }
+	    if(x_targeted - 1 < this.getX() && y_targeted < this.getY() && this.Map[x-1][y] != null && x_targeted-1!=0 && y_targeted!=0){
+	        this.getTerritoryByCoordinates(x_targeted-1, y_targeted).removeNeighbour(old_ID);
+	        this.getNeighbours(x_targeted-1,y_targeted);
+	    }
+	    if(x_targeted < this.getX() && y_targeted - 1 < this.getY() && this.Map[x][y-1] != null && x_targeted!=0 && y_targeted-1!=0){
+	        this.getTerritoryByCoordinates(x_targeted, y_targeted-1).removeNeighbour(old_ID);
+	        this.getNeighbours(x_targeted,y_targeted-1);
+	    }
+	    if(x_targeted < this.getX() && y_targeted+1 < this.getY() && this.Map[x][y+1] != null && x_targeted!=0 && y_targeted+1!=0){
+	        this.getTerritoryByCoordinates(x_targeted, y_targeted+1).removeNeighbour(old_ID);
+	        this.getNeighbours(x_targeted,y_targeted+1);
+	    }
+	}
+	
 	public Territory getTerritoryByCoordinates(int xSearched, int ySearched) {
 		for (int x = 0; x < this.x; x++) {
 			for (int y = 0; y < this.y; y++) {

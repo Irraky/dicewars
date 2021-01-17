@@ -1,11 +1,7 @@
 package efreiDicewars;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
 import java.util.Scanner;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
+
 
 public class Player{
     private int ID;
@@ -92,31 +88,40 @@ public class Player{
     	return true;
     }
     
-    public void runAttack(Territory territoryAttacked, Territory territoryAttacker, ArrayList<Player> players) {
+    public boolean runAttack(Territory territoryAttacked, Territory territoryAttacker, ArrayList<Player> players) {
+    	boolean success = false;
     	if (rollDices(territoryAttacked, territoryAttacker) == true) {
+    		success = true;
     		// add territory id to the winner of this fight
     		Player attacker = players.get(territoryAttacker.getPlayerID());
-    		attacker.addTerritory(territoryAttacked.getID());
+    		attacker.addTerritory(territoryAttacked.getPlayerID());
     		// remove territory id from the loser of the fight
     		Player attacked = players.get(territoryAttacked.getPlayerID());
-    		attacked.removeTerritory(territoryAttacked.getID());
+    		attacked.removeTerritory(territoryAttacked.getPlayerID());
     		// update the number of dices of the attacked territory
     		territoryAttacked.updateDiceNumber(territoryAttacker.getDiceNumber() - 1);
     		territoryAttacked.updatePlayerID(territoryAttacker.getPlayerID());
     	}
     	// update neighbors
     	territoryAttacker.updateDiceNumber(1);
+    	return success;
     }
     
-    public void attackTerritory(Map map, ArrayList<Player> players, Scanner s) {
+    public boolean attackTerritory(Map map, ArrayList<Player> players, Scanner s) {
         int attacking_territoryX = -1;
         int attacking_territoryY = -1;
         int targeted_territoryX = -1;
         int targeted_territoryY = -1;
+        Territory attacking;
+        Territory attacked;
+        System.out.println(map.getX());
+        System.out.println(map.getY());
         do {
-        	if (!map.attackPossible(this.ID) &&
-        		(attacking_territoryX >= 0 && attacking_territoryX < map.getX()) && 
-        		(attacking_territoryY >= 0 && attacking_territoryY < map.getY()))
+        	attacking = map.getTerritoryByCoordinates(attacking_territoryX, attacking_territoryY);
+        	if ((attacking_territoryX >= 0 && attacking_territoryX < map.getX()) && 
+        		(attacking_territoryY >= 0 && attacking_territoryY < map.getY()) &&
+        		(attacking = map.getTerritoryByCoordinates(attacking_territoryX, attacking_territoryY)) != null
+        		&& attacking.getPlayerID() != this.getID())
         		System.out.println("This territory doesn't belong to you or doesn't have enough dice");
         	System.out.println("Enter the coordinates x y of the attacking territory (format: \"x y\"):");
         	if(s.hasNextInt()) 
@@ -129,14 +134,19 @@ public class Player{
     		}
         	s.nextLine();
         }
-        while (!map.attackPossible(this.ID) &&
-        		!(targeted_territoryX >= 0 && targeted_territoryX < map.getX()) && 
-        		!(targeted_territoryY >= 0 && targeted_territoryY < map.getY()));
+
+        while ((attacking_territoryX < 0 || attacking_territoryX >= map.getX() ||
+        		attacking_territoryY < 0 || attacking_territoryY >= map.getY()) &&
+        		(attacking == null || attacking.getPlayerID() != this.getID()));
+        System.out.println(attacking_territoryX);
+        System.out.println(attacking_territoryY);
         do {
-        	if (map.attackPossible(this.ID) &&
-        		(targeted_territoryX >= 0 && targeted_territoryX < map.getX()) && 
-        		(targeted_territoryY >= 0 && targeted_territoryY < map.getY()))
-        		System.out.println("This territory belongs to you (can't attack it) or doesn't have enough dice");
+        	attacked = map.getTerritoryByCoordinates(targeted_territoryX, targeted_territoryY);
+        	if ((targeted_territoryX >= 0 && targeted_territoryX < map.getX()) && 
+        		(targeted_territoryY >= 0 && targeted_territoryY < map.getY()) &&
+        		(attacked = map.getTerritoryByCoordinates(targeted_territoryX, targeted_territoryY)) != null
+        		&& attacked.getPlayerID() == this.getID())
+        		System.out.println("This territory belongs to you (can't attack it)");
         	System.out.println("Enter the coordinates x y of the attacked territory (format: \"x y\"):");
         	if(s.hasNextInt()) 
     		{
@@ -148,10 +158,15 @@ public class Player{
     		}
         	s.nextLine();
         }
-        while (map.attackPossible(this.ID) &&
-        		!(targeted_territoryX >= 0 && targeted_territoryX < map.getX()) && 
-        		!(targeted_territoryY >= 0 && targeted_territoryY < map.getY()));
-        runAttack(map.getTerritoryByCoordinates(targeted_territoryX, targeted_territoryY), map.getTerritoryByCoordinates(attacking_territoryX, attacking_territoryY), players);
+        while (!(targeted_territoryX >= 0 && targeted_territoryX < map.getX()) && 
+        		!(targeted_territoryY >= 0 && targeted_territoryY < map.getY()) &&
+        		(attacked == null || attacked.getPlayerID() == this.getID()));
+        int oldId = map.getTerritoryByCoordinates(targeted_territoryX, targeted_territoryY).getPlayerID();
+        if (runAttack(map.getTerritoryByCoordinates(targeted_territoryX, targeted_territoryY), map.getTerritoryByCoordinates(attacking_territoryX, attacking_territoryY), players) == true) {
+        	map.checkOldID(targeted_territoryX, targeted_territoryY, oldId);
+        	return true;
+    	}
+        return false;
     }
 
     public void endTurn(Map map){
